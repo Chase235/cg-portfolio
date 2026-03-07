@@ -55,16 +55,32 @@ export default function BlurHeadline({ text }: BlurHeadlineProps) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {text.split("").map((char, i) => (
-        <span
-          key={i}
-          ref={(el) => { charsRef.current[i] = el; }}
-          className="inline-block transition-[filter,opacity] duration-100"
-          style={{ filter: "blur(2px)", opacity: 0.75, whiteSpace: "pre" }}
-        >
-          {char}
-        </span>
-      ))}
+      {text.split(" ").map((word, wi) => {
+        const charOffset = text.split(" ").slice(0, wi).reduce((acc, w) => acc + w.length + 1, 0);
+        return (
+          <span key={wi} style={{ whiteSpace: "nowrap" }}>
+            {word.split("").map((char, ci) => (
+              <span
+                key={charOffset + ci}
+                ref={(el) => { charsRef.current[charOffset + ci] = el; }}
+                className="inline-block transition-[filter,opacity] duration-100"
+                style={{ filter: "blur(2px)", opacity: 0.75 }}
+              >
+                {char}
+              </span>
+            ))}
+            {wi < text.split(" ").length - 1 && (
+              <span
+                ref={(el) => { charsRef.current[charOffset + word.length] = el; }}
+                className="inline-block transition-[filter,opacity] duration-100"
+                style={{ filter: "blur(2px)", opacity: 0.75, whiteSpace: "pre" }}
+              >
+                {" "}
+              </span>
+            )}
+          </span>
+        );
+      })}
     </h1>
   );
 }
