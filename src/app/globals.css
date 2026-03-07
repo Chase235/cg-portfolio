@@ -1,26 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
+/* ============================================
+   THEME: CSS Custom Properties
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #F8FCFF;
+  --text-primary: #1E3A5F;
+  --text-secondary: #57534E;
+  --text-muted: #A8A29F;
+  --text-link: #1E3A5F;
+  --divider: #D9D6D1;
+  --video-bg: #1C1917;
+  --cta-bg: #1E3A5F;
+  --cta-text: #FAFAF7;
+  --toggle-bg: #D9E8F7;
+  --toggle-pill: #FFFFFF;
+  --toggle-active: #1C1917;
+  --toggle-inactive: #748CC4;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  --bg: #1E3A5F;
+  --text-primary: #F0F7FC;
+  --text-secondary: #B0C4D8;
+  --text-muted: #7A9BBD;
+  --text-link: #87BEEA;
+  --divider: #2D4F78;
+  --video-bg: #1C1917;
+  --cta-bg: #F0F7FC;
+  --cta-text: #1E3A5F;
+  --toggle-bg: #162D4A;
+  --toggle-pill: #2D4F78;
+  --toggle-active: #F0F7FC;
+  --toggle-inactive: #4A6A8A;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   TAILWIND THEME EXTENSION
+   ============================================ */
+@theme {
+  --font-display: "DM Serif Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-space-mono: "Space Mono", monospace;
+}
+
+/* ============================================
+   FLUID TYPE SCALE (Studio Freight approach)
+   Scales between 768px → 1920px viewport
+   ============================================ */
+:root {
+  --type-display: clamp(26px, 5vw, 72px);
+  --type-body: clamp(15px, 1.6vw, 22px);
+  --type-body-leading: clamp(22px, 2.4vw, 34px);
+  --type-secondary: clamp(13px, 1.2vw, 17px);
+  --type-label: clamp(10px, 0.85vw, 14px);
+  --type-ticker: clamp(10px, 1.1vw, 16px);
+  --type-cta: clamp(13px, 1.1vw, 16px);
+  --type-footer: clamp(11px, 1vw, 14px);
+  --space-gutter: clamp(24px, 4vw, 64px);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+html {
+  font-family: "Inter", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   TITLES TICKER (CSS-only animation)
+   ============================================ */
+.ticker-track {
+  display: inline-block;
+  animation: ticker-scroll 30s linear infinite;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================
+   DESKTOP: No scroll, full viewport
+   ============================================ */
+@media (min-width: 768px) {
+  .page-container {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ============================================
+   MOBILE: Allow scroll
+   ============================================ */
+@media (max-width: 767px) {
+  .page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+::selection {
+  background: #1E3A5F;
+  color: #F8FCFF;
+}
+
+[data-theme="dark"] ::selection {
+  background: #F0F7FC;
+  color: #1E3A5F;
 }
