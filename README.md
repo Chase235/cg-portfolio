@@ -1,13 +1,13 @@
 # Portfolio Starter
 
-A single-page portfolio site built with Next.js, Tailwind CSS, and GSAP. Designed for designers, engineers, and creative directors who want a clean, opinionated starting point.
+A single-page portfolio site built with Next.js, Tailwind CSS, and GSAP. 
 
 ## Features
 
 - **Light / Dark mode** with persistent toggle and no flash on load
-- **Human / AI view** — switch between a designed layout and a terminal-style markdown view
+- **Human / AI view** — switch between a designed layout and a markdown view
 - **Fluid typography** — all text scales smoothly across viewport widths and heights using CSS `clamp()` with `vw` and `vh` units
-- **No-scroll desktop layout** — everything fits in the viewport at any screen size; mobile scrolls naturally
+- **No-scroll fixed desktop layout** — everything fits in the viewport at any screen size; mobile scrolls naturally
 - **GSAP scatter ticker** — footer inspiration ticker with letters that scatter-animate into place as they enter the viewport
 - **CSS titles ticker** — seamless looping ticker with gradient fade
 - **Fully tokenized theming** — swap the entire palette by editing a handful of CSS custom properties in `globals.css`
