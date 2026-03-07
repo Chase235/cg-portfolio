@@ -17,10 +17,10 @@ export default function Header({
   onModeToggle,
 }: HeaderProps) {
   return (
-    <header className="px-[var(--space-gutter)] pt-8 md:pt-12 pb-0 flex-shrink-0">
+    <header className="px-[var(--space-gutter)] pt-8 md:pt-[2vh] pb-0 flex-shrink-0">
       {/* Row 1: Headline + Toggles */}
       <div className="flex items-center md:items-end justify-between mb-2">
-        <h1 className="font-display leading-none text-[var(--text-primary)]" style={{ fontSize: 'var(--type-display)' }}>
+        <h1 className="font-mono font-bold leading-none text-[var(--text-primary)]" style={{ fontSize: 'var(--type-display)' }}>
           Chase Gobble
         </h1>
         <div className="flex gap-2 md:gap-3 scale-90 md:scale-110 origin-right md:mb-1">
@@ -43,7 +43,7 @@ export default function Header({
       <TitlesTicker />
 
       {/* Divider */}
-      <div className="h-px bg-[var(--divider)] mt-3 md:mt-4" />
+      <div className="h-px bg-[var(--divider)] mt-3 md:mt-[1vh]" />
     </header>
   );
 }

@@ -51,7 +51,7 @@
    Scales between 768px → 1920px viewport
    ============================================ */
 :root {
-  --type-display: clamp(26px, 5vw, 72px);
+  --type-display: clamp(23px, 4.5vw, 65px);
   --type-body: clamp(13px, min(1.6vw, 2.2vh), 22px);
   --type-body-leading: clamp(20px, min(2.4vw, 3.2vh), 34px);
   --type-secondary: clamp(11px, min(1.2vw, 1.7vh), 17px);

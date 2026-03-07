@@ -18,78 +18,89 @@ export default function InspirationTicker() {
     const chars = track.querySelectorAll<HTMLSpanElement>(".insp-char");
     if (chars.length === 0) return;
 
+    const totalChars = chars.length;
+    const halfCount = totalChars / 2;
     const halfWidth = track.scrollWidth / 2;
-    const scatterZone = 120; // px from left edge where scatter happens
+    const scatterZone = 250;
 
-    // Start all chars invisible
-    gsap.set(chars, { opacity: 0 });
+    // Each char gets unique scatter values + a random resolve offset
+    const scatterData = Array.from({ length: totalChars }, () => ({
+      y: gsap.utils.random(-4, 4),
+      x: gsap.utils.random(-20, 20),
+      rotation: gsap.utils.random(-90, 90),
+      scale: gsap.utils.random(0.3, 1.8),
+      offset: gsap.utils.random(0, 0.5),
+    }));
 
-    // Track which chars are currently "active" (visible and settled)
-    const settled = new Set<Element>();
+    // Start all chars scattered
+    chars.forEach((char, i) => {
+      gsap.set(char, {
+        opacity: 0,
+        y: scatterData[i].y,
+        x: scatterData[i].x,
+        rotation: scatterData[i].rotation,
+        scale: scatterData[i].scale,
+      });
+    });
 
-    // Scatter a char and animate it settling
-    function scatterIn(char: Element) {
-      if (settled.has(char)) return;
-      settled.add(char);
-      gsap.fromTo(
-        char,
-        {
-          opacity: 0,
-          y: gsap.utils.random(-50, 50),
-          x: gsap.utils.random(-8, 8),
-          rotation: gsap.utils.random(-35, 35),
-          scale: gsap.utils.random(0.4, 1.3),
-        },
-        {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          rotation: 0,
-          scale: 1,
-          duration: 0.6,
-          ease: "back.out(1.2)",
-        }
-      );
-    }
-
-    // Reset a char when it exits right so it can scatter again on re-entry
-    function resetChar(char: Element) {
-      if (!settled.has(char)) return;
-      settled.delete(char);
-      gsap.set(char, { opacity: 0 });
-    }
-
-    // Start track offset left, scroll rightward
     gsap.set(track, { x: -halfWidth });
+
+    const easer = gsap.parseEase("power3.out");
 
     const scrollTween = gsap.to(track, {
       x: 0,
       duration: halfWidth / 30,
       ease: "none",
       repeat: -1,
+      onRepeat() {
+        for (let i = 0; i < halfCount; i++) {
+          const char1 = chars[i];
+          const char2 = chars[i + halfCount];
+          const op = gsap.getProperty(char1, "opacity") as number;
+          if (op > 0.5) {
+            gsap.set(char2, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
+          } else {
+            const sd = scatterData[i + halfCount];
+            gsap.set(char2, { opacity: 0, y: sd.y, x: sd.x, rotation: sd.rotation, scale: sd.scale });
+          }
+          const sd1 = scatterData[i];
+          gsap.set(char1, { opacity: 0, y: sd1.y, x: sd1.x, rotation: sd1.rotation, scale: sd1.scale });
+        }
+      },
       onUpdate() {
         const containerRect = container.getBoundingClientRect();
         const leftEdge = containerRect.left;
         const rightEdge = containerRect.right;
 
-        for (let i = 0; i < chars.length; i++) {
+        for (let i = 0; i < totalChars; i++) {
           const char = chars[i];
           const rect = char.getBoundingClientRect();
           const charCenter = rect.left + rect.width / 2;
+          const distFromLeft = charCenter - leftEdge;
 
-          // Char entering from left — within scatter zone
-          if (charCenter >= leftEdge - 20 && charCenter <= leftEdge + scatterZone) {
-            scatterIn(char);
-          }
-          // Char exited past right edge — reset for next loop
-          else if (charCenter > rightEdge + 50) {
-            resetChar(char);
-          }
-          // Char is in the middle visible area but not settled (e.g. initial load)
-          else if (charCenter > leftEdge + scatterZone && charCenter < rightEdge && !settled.has(char)) {
-            // Instantly show chars already in view on first pass
-            settled.add(char);
-            gsap.set(char, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
+          if (distFromLeft < -40) {
+            continue;
+          } else if (distFromLeft <= scatterZone) {
+            const sd = scatterData[i];
+            const rawProgress = Math.max(0, (distFromLeft + 40) / (scatterZone + 40));
+            const adjusted = Math.min(1, Math.max(0, (rawProgress - sd.offset) / (1 - sd.offset)));
+            const eased = easer(adjusted);
+
+            gsap.set(char, {
+              opacity: eased,
+              y: sd.y * (1 - eased),
+              x: sd.x * (1 - eased),
+              rotation: sd.rotation * (1 - eased),
+              scale: 1 + (sd.scale - 1) * (1 - eased),
+            });
+          } else if (distFromLeft <= rightEdge - leftEdge + 50) {
+            const op = gsap.getProperty(char, "opacity") as number;
+            if (op < 1) {
+              gsap.set(char, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
+            }
+          } else {
+            const sd = scatterData[i];
+            gsap.set(char, { opacity: 0, y: sd.y, x: sd.x, rotation: sd.rotation, scale: sd.scale });
           }
         }
       },

@@ -43,13 +43,8 @@ export default function AIView() {
     <div className="flex-1 px-4 md:px-12 py-4 md:py-6 overflow-auto">
       <div className="bg-[#0E1320] rounded-lg overflow-hidden w-full max-w-[1344px] mx-auto">
         {/* Terminal bar */}
-        <div className="flex items-center h-7 md:h-8 bg-[#0B0F18] px-3 md:px-4">
-          <div className="flex gap-[6px] md:gap-2">
-            <div className="w-2 h-2 md:w-[10px] md:h-[10px] rounded-full bg-[#FE6158]" />
-            <div className="w-2 h-2 md:w-[10px] md:h-[10px] rounded-full bg-[#FEBD2E]" />
-            <div className="w-2 h-2 md:w-[10px] md:h-[10px] rounded-full bg-[#28CF63]" />
-          </div>
-          <span className="flex-1 text-center text-[9px] md:text-[11px] font-mono text-[#738090]">
+        <div className="flex items-center justify-center h-7 md:h-8 bg-[#0B0F18] px-3 md:px-4">
+          <span className="text-[9px] md:text-[11px] font-mono text-[#738090]">
             chase-gobble.md
           </span>
         </div>
