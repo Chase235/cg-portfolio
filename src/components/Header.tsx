@@ -2,6 +2,7 @@
 
 import SegmentedToggle from "./SegmentedToggle";
 import TitlesTicker from "./TitlesTicker";
+import BlurHeadline from "./BlurHeadline";
 
 interface HeaderProps {
   isLight: boolean;
@@ -20,16 +21,19 @@ export default function Header({
     <header className="px-[var(--space-gutter)] pt-8 md:pt-[2vh] pb-0 flex-shrink-0">
       {/* Row 1: Headline + Toggles */}
       <div className="flex items-center md:items-end justify-between mb-2">
-        <h1 className="font-mono font-bold leading-none text-[var(--text-primary)]" style={{ fontSize: 'var(--type-display)' }}>
-          Chase Gobble
-        </h1>
+        <BlurHeadline text="Chase Gobble" />
         <div className="flex gap-2 md:gap-3 scale-90 md:scale-110 origin-right md:mb-1">
-          <SegmentedToggle
-            leftLabel="Light"
-            rightLabel="Dark"
-            activeLeft={isLight}
-            onToggle={onThemeToggle}
-          />
+          <div
+            className="transition-opacity duration-300"
+            style={{ opacity: isHuman ? 1 : 0, pointerEvents: isHuman ? "auto" : "none" }}
+          >
+            <SegmentedToggle
+              leftLabel="Light"
+              rightLabel="Dark"
+              activeLeft={isLight}
+              onToggle={onThemeToggle}
+            />
+          </div>
           <SegmentedToggle
             leftLabel="Human"
             rightLabel="AI"

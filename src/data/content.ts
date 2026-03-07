@@ -84,11 +84,6 @@ and products for early-stage AI companies.
 - org: W2O Group
 - org: Amazon
 
-## education
-- MFA Photography — The New School
-- BBA Strategic Design & Management — The New School
-- BA Philosophy — The New School
-
 ## skills
 [design-systems, brand-systems, creative-direction,
  AI-native-workflows, design-operations, figma, react,

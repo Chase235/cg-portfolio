@@ -30,7 +30,8 @@ export default function RootLayout({
                 try {
                   var theme = localStorage.getItem('theme');
                   if (theme) {
-                    document.documentElement.setAttribute('data-theme', JSON.parse(theme));
+                    try { theme = JSON.parse(theme); } catch(e) {}
+                    document.documentElement.setAttribute('data-theme', theme);
                   }
                 } catch(e) {}
               })();

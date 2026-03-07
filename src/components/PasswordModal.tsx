@@ -3,15 +3,14 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
 
-interface ContactModalProps {
+interface PasswordModalProps {
   open: boolean;
   onClose: () => void;
+  onRequestAccess: () => void;
 }
 
-export default function ContactModal({ open, onClose }: ContactModalProps) {
-  const [replyTo, setReplyTo] = useState("");
-  const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+export default function PasswordModal({ open, onClose, onRequestAccess }: PasswordModalProps) {
+  const [passcode, setPasscode] = useState("");
   const [mounted, setMounted] = useState(false);
   const backdropRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +33,6 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
     const tl = gsap.timeline();
     tlRef.current = tl;
 
-    // Start state: curve wipe below viewport
     const isMobile = window.innerWidth < 768;
 
     gsap.set(svg, { display: "block" });
@@ -46,7 +44,6 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
       gsap.set(modal, { opacity: 0, scale: 0.95, y: 30 });
     }
 
-    // Animate curve wipe from bottom to top
     tl.fromTo(
       path,
       { attr: { d: "M-30,120 Q50,120 130,120 L130,120 L-30,120 Z" } },
@@ -127,22 +124,17 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
       );
   }, []);
 
-  // Mount/unmount + trigger animations
   useEffect(() => {
     if (open) {
-      setSent(false);
-      setReplyTo("");
-      setMessage("");
+      setPasscode("");
       setMounted(true);
     } else if (mounted) {
       animateOut();
     }
   }, [open, mounted, animateOut]);
 
-  // Animate in once mounted
   useEffect(() => {
     if (mounted && open) {
-      // Small delay to ensure DOM is rendered
       requestAnimationFrame(() => {
         animateIn();
         setTimeout(() => inputRef.current?.focus(), 400);
@@ -163,12 +155,29 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    if (passcode.toLowerCase() === "turkey") {
+      onClose();
+      // TODO: open portfolio view
+    } else {
+      // Shake the modal
+      if (modalRef.current) {
+        gsap.to(modalRef.current, {
+          keyframes: [
+            { x: -8, duration: 0.06 },
+            { x: 8, duration: 0.06 },
+            { x: -6, duration: 0.05 },
+            { x: 6, duration: 0.05 },
+            { x: 0, duration: 0.04 },
+          ],
+          ease: "power1.inOut",
+        });
+      }
+      setPasscode("");
+    }
   };
 
   return (
     <>
-      {/* SVG curve wipe overlay */}
       <svg
         ref={svgRef}
         className="fixed inset-0 z-[60] pointer-events-none"
@@ -183,7 +192,6 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
         />
       </svg>
 
-      {/* Backdrop + modal */}
       <div
         ref={backdropRef}
         className="fixed inset-0 z-[70] flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm"
@@ -194,11 +202,11 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
       >
         <div
           ref={modalRef}
-          className="w-full max-w-lg mx-0 md:mx-4 bg-[#0E1320] border border-[#1E2D45] rounded-t-xl md:rounded-lg shadow-2xl overflow-hidden"
+          className="w-full max-w-sm mx-0 md:mx-4 bg-[#0E1320] border border-[#1E2D45] rounded-t-xl md:rounded-lg shadow-2xl overflow-hidden"
           style={{ opacity: 0 }}
         >
           {/* Terminal header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#1E2D45]">
+          <div className="flex items-center px-4 py-3 border-b border-[#1E2D45]">
             <div className="flex items-center gap-2">
               <div className="flex gap-1.5">
                 <button
@@ -207,83 +215,50 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
                 />
               </div>
               <span className="ml-3 text-[11px] font-mono text-[#738090]">
-                contact.md
+                authenticate
               </span>
             </div>
-            <span className="text-[10px] font-mono text-[#738090] tracking-wider">
-              MARKDOWN SUPPORTED
-            </span>
           </div>
 
-          {sent ? (
-            <div className="p-8 text-center">
-              <p className="font-mono text-[#9BD59A] text-sm">
-                {">"} Message sent successfully.
-              </p>
-              <p className="font-mono text-[#738090] text-xs mt-2">
-                I&apos;ll get back to you soon.
-              </p>
+          <form onSubmit={handleSubmit} className="p-4 space-y-4">
+            <div>
+              <label className="flex items-center gap-2 font-mono text-xs text-[#738090] mb-1.5">
+                <span className="text-[#7EB9FE]">$</span>
+                passcode
+              </label>
+              <input
+                ref={inputRef}
+                type="password"
+                required
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                placeholder="enter passcode"
+                className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors"
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
               <button
-                onClick={onClose}
-                className="mt-6 px-6 py-2 font-mono text-xs text-[#D1D9E0] border border-[#2D4F78] rounded hover:bg-[#1E2D45] transition-colors cursor-pointer"
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onRequestAccess();
+                }}
+                className="group flex items-center gap-1.5 font-mono text-[11px] text-[#738090] hover:text-[#D1D9E0] transition-colors cursor-pointer"
               >
-                close
+                request access
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  →
+                </span>
+              </button>
+              <button
+                type="submit"
+                className="px-5 py-2 font-mono text-xs font-medium bg-[#7EB9FE] text-[#0E1320] rounded hover:bg-[#9ECBFF] transition-colors cursor-pointer"
+              >
+                proceed
               </button>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="p-4 space-y-4">
-              {/* Reply-to field */}
-              <div>
-                <label className="flex items-center gap-2 font-mono text-xs text-[#738090] mb-1.5">
-                  <span className="text-[#7EB9FE]">$</span>
-                  reply_to
-                </label>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  required
-                  value={replyTo}
-                  onChange={(e) => setReplyTo(e.target.value)}
-                  placeholder="your email or phone number"
-                  className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors"
-                />
-              </div>
-
-              {/* Message field */}
-              <div>
-                <label className="flex items-center justify-between font-mono text-xs text-[#738090] mb-1.5">
-                  <span className="flex items-center gap-2">
-                    <span className="text-[#7EB9FE]">$</span>
-                    message
-                  </span>
-                  <span className="text-[10px] text-[#3A4A5C]">
-                    # **bold** *italic* `code` supported
-                  </span>
-                </label>
-                <textarea
-                  required
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="let's discuss"
-                  rows={6}
-                  className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors resize-none"
-                />
-              </div>
-
-              {/* Submit */}
-              <div className="flex items-center justify-between pt-1">
-                <span className="hidden md:inline font-mono text-[10px] text-[#3A4A5C]">
-                  esc to close
-                </span>
-                <button
-                  type="submit"
-                  className="px-5 py-2 font-mono text-xs font-medium bg-[#7EB9FE] text-[#0E1320] rounded hover:bg-[#9ECBFF] transition-colors cursor-pointer"
-                >
-                  send_message()
-                </button>
-              </div>
-            </form>
-          )}
+          </form>
         </div>
       </div>
     </>

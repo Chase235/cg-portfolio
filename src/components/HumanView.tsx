@@ -4,6 +4,7 @@ import { useState } from "react";
 import { siteContent } from "@/data/content";
 import VideoPlaceholder from "./VideoPlaceholder";
 import ContactModal from "./ContactModal";
+import PasswordModal from "./PasswordModal";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -60,7 +61,7 @@ function MessageIcon() {
 
 function ContactIcons({ onMessageClick }: { onMessageClick: () => void }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-6">
       <a
         href="https://github.com/Chase235"
         target="_blank"
@@ -92,6 +93,7 @@ function ContactIcons({ onMessageClick }: { onMessageClick: () => void }) {
 
 export default function HumanView() {
   const [contactOpen, setContactOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
 
   return (
     <>
@@ -132,8 +134,10 @@ export default function HumanView() {
               <SectionLabel>{siteContent.previously.label}</SectionLabel>
               <SecondaryText>{siteContent.previously.value}</SecondaryText>
             </div>
-            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[1.5vh]">
-              <SectionLabel>{siteContent.contact.label}</SectionLabel>
+            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[2vh]">
+              <div className="mb-2">
+                <SectionLabel>{siteContent.contact.label}</SectionLabel>
+              </div>
               <ContactIcons onMessageClick={() => setContactOpen(true)} />
             </div>
           </div>
@@ -157,6 +161,7 @@ export default function HumanView() {
           {/* CTA */}
           <div className="mt-6 md:mt-[2vh]">
             <button
+              onClick={() => setPasswordOpen(true)}
               className="w-full md:w-auto px-8 py-[1vh] bg-[var(--cta-bg)] text-[var(--cta-text)] font-mono font-medium rounded-md hover:opacity-90 transition-opacity cursor-pointer"
               style={{ fontSize: "var(--type-cta)" }}
             >
@@ -199,6 +204,11 @@ export default function HumanView() {
       </div>
 
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+      <PasswordModal
+        open={passwordOpen}
+        onClose={() => setPasswordOpen(false)}
+        onRequestAccess={() => setContactOpen(true)}
+      />
     </>
   );
 }

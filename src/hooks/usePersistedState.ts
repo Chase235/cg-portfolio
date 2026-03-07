@@ -1,27 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function usePersistedState<T>(
   key: string,
   defaultValue: T
 ): [T, (value: T) => void] {
   const [state, setState] = useState<T>(defaultValue);
-  const [hydrated, setHydrated] = useState(false);
+  const initialized = useRef(false);
 
+  // On mount, read localStorage and override default
   useEffect(() => {
-    const stored = localStorage.getItem(key);
-    if (stored !== null) {
-      setState(JSON.parse(stored));
-    }
-    setHydrated(true);
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored !== null) {
+        setState(JSON.parse(stored));
+      }
+    } catch {}
+    initialized.current = true;
   }, [key]);
 
+  // Persist to localStorage on every change after init
   useEffect(() => {
-    if (hydrated) {
+    if (initialized.current) {
       localStorage.setItem(key, JSON.stringify(state));
     }
-  }, [key, state, hydrated]);
+  }, [key, state]);
 
   return [state, setState];
 }

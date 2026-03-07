@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
 /* ============================================
@@ -40,7 +40,7 @@
    TAILWIND THEME EXTENSION
    ============================================ */
 @theme {
-  --font-display: "DM Serif Display", serif;
+  --font-display: "Space Grotesk", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   --font-space-mono: "Space Mono", monospace;
@@ -51,7 +51,7 @@
    Scales between 768px → 1920px viewport
    ============================================ */
 :root {
-  --type-display: clamp(23px, 4.5vw, 65px);
+  --type-display: clamp(19px, 2.94vw, 42px);
   --type-body: clamp(13px, min(1.6vw, 2.2vh), 22px);
   --type-body-leading: clamp(20px, min(2.4vw, 3.2vh), 34px);
   --type-secondary: clamp(11px, min(1.2vw, 1.7vh), 17px);
@@ -72,9 +72,12 @@ html {
 body {
   background: var(--bg);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.ready {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ============================================

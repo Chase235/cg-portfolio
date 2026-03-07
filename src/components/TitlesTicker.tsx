@@ -8,7 +8,7 @@ export default function TitlesTicker() {
   const tripled = text + text + text;
 
   return (
-    <div className="relative overflow-hidden" style={{ height: 'calc(var(--type-ticker) + 6px)' }}>
+    <div className="relative overflow-hidden" style={{ height: 'calc(var(--type-ticker) * 2.2)' }}>
       <div className="ticker-track whitespace-nowrap font-spaceMono text-[var(--text-secondary)]" style={{ fontSize: 'var(--type-ticker)' }}>
         {tripled}
       </div>

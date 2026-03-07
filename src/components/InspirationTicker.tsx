@@ -25,7 +25,7 @@ export default function InspirationTicker() {
 
     // Each char gets unique scatter values + a random resolve offset
     const scatterData = Array.from({ length: totalChars }, () => ({
-      y: gsap.utils.random(-4, 4),
+      y: gsap.utils.random(-12, 12),
       x: gsap.utils.random(-20, 20),
       rotation: gsap.utils.random(-90, 90),
       scale: gsap.utils.random(0.3, 1.8),
@@ -93,14 +93,31 @@ export default function InspirationTicker() {
               rotation: sd.rotation * (1 - eased),
               scale: 1 + (sd.scale - 1) * (1 - eased),
             });
-          } else if (distFromLeft <= rightEdge - leftEdge + 50) {
-            const op = gsap.getProperty(char, "opacity") as number;
-            if (op < 1) {
-              gsap.set(char, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
-            }
           } else {
-            const sd = scatterData[i];
-            gsap.set(char, { opacity: 0, y: sd.y, x: sd.x, rotation: sd.rotation, scale: sd.scale });
+            const containerWidth = rightEdge - leftEdge;
+            const distFromRight = containerWidth - distFromLeft;
+
+            if (distFromRight < -40) {
+              continue;
+            } else if (distFromRight <= scatterZone) {
+              const sd = scatterData[i];
+              const rawProgress = Math.max(0, (distFromRight + 40) / (scatterZone + 40));
+              const adjusted = Math.min(1, Math.max(0, (rawProgress - sd.offset) / (1 - sd.offset)));
+              const eased = easer(adjusted);
+
+              gsap.set(char, {
+                opacity: eased,
+                y: sd.y * (1 - eased),
+                x: sd.x * (1 - eased),
+                rotation: sd.rotation * (1 - eased),
+                scale: 1 + (sd.scale - 1) * (1 - eased),
+              });
+            } else {
+              const op = gsap.getProperty(char, "opacity") as number;
+              if (op < 1) {
+                gsap.set(char, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
+              }
+            }
           }
         }
       },
@@ -121,7 +138,7 @@ export default function InspirationTicker() {
   ));
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden" style={{ height: "calc(var(--type-footer) + 6px)" }}>
+    <div ref={containerRef} className="relative overflow-hidden" style={{ height: "calc(var(--type-footer) + 28px)", paddingTop: "10px" }}>
       <div
         ref={trackRef}
         className="whitespace-nowrap font-mono text-[var(--text-muted)] inline-flex"
@@ -129,7 +146,6 @@ export default function InspirationTicker() {
       >
         {charSpans}
       </div>
-      <div className="absolute right-0 top-0 h-full w-20 md:w-32 bg-gradient-to-l from-[var(--bg)] to-transparent pointer-events-none z-10" />
     </div>
   );
 }
