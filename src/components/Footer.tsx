@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="flex-shrink-0 px-[var(--space-gutter)] pb-4 md:pb-6">
       <div className="h-px bg-[var(--divider)] mb-3 md:mb-4" />
-      <div className="flex items-baseline">
+      <div className="flex items-center">
         <p
           className="font-mono text-[var(--text-muted)] whitespace-nowrap flex-shrink-0 md:w-[33%]"
           style={{ fontSize: "var(--type-footer)" }}
@@ -16,7 +16,7 @@ export default function Footer() {
             className="font-mono font-bold text-[var(--text-muted)] flex-shrink-0 leading-tight"
             style={{ fontSize: "var(--type-footer)" }}
           >
-            Major<br />Inspirations:
+            Loving<br />Inspirations:
           </p>
           <div className="flex-1 min-w-0">
             <InspirationTicker />
@@ -26,7 +26,7 @@ export default function Footer() {
       {/* Mobile: inspiration ticker on its own row */}
       <div className="md:hidden mt-2">
         <p className="font-mono text-[11px] font-bold text-[var(--text-muted)] mb-1">
-          Major Inspirations:
+          Loving Inspirations:
         </p>
         <InspirationTicker />
       </div>

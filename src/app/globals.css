@@ -6,34 +6,34 @@
    ============================================ */
 :root {
   --bg: #F8FCFF;
-  --text-primary: #1E3A5F;
+  --text-primary: #1A1A1E;
   --text-secondary: #57534E;
   --text-muted: #A8A29F;
-  --text-link: #1E3A5F;
+  --text-link: #1A1A1E;
   --divider: #D9D6D1;
   --video-bg: #1C1917;
-  --cta-bg: #1E3A5F;
+  --cta-bg: #1A1A1E;
   --cta-text: #FAFAF7;
-  --toggle-bg: #D9E8F7;
+  --toggle-bg: #E0E0E3;
   --toggle-pill: #FFFFFF;
-  --toggle-active: #1C1917;
-  --toggle-inactive: #748CC4;
+  --toggle-active: #1A1A1E;
+  --toggle-inactive: #8A8A90;
 }
 
 [data-theme="dark"] {
-  --bg: #1E3A5F;
-  --text-primary: #F0F7FC;
-  --text-secondary: #B0C4D8;
-  --text-muted: #7A9BBD;
-  --text-link: #87BEEA;
-  --divider: #2D4F78;
-  --video-bg: #1C1917;
-  --cta-bg: #F0F7FC;
-  --cta-text: #1E3A5F;
-  --toggle-bg: #162D4A;
-  --toggle-pill: #2D4F78;
-  --toggle-active: #F0F7FC;
-  --toggle-inactive: #4A6A8A;
+  --bg: #1A1A1E;
+  --text-primary: #EDEDF0;
+  --text-secondary: #A0A0A8;
+  --text-muted: #6A6A72;
+  --text-link: #B0B0BA;
+  --divider: #2C2C32;
+  --video-bg: #131315;
+  --cta-bg: #EDEDF0;
+  --cta-text: #1A1A1E;
+  --toggle-bg: #28282E;
+  --toggle-pill: #3A3A42;
+  --toggle-active: #EDEDF0;
+  --toggle-inactive: #5A5A62;
 }
 
 /* ============================================
@@ -52,12 +52,12 @@
    ============================================ */
 :root {
   --type-display: clamp(26px, 5vw, 72px);
-  --type-body: clamp(15px, 1.6vw, 22px);
-  --type-body-leading: clamp(22px, 2.4vw, 34px);
-  --type-secondary: clamp(13px, 1.2vw, 17px);
-  --type-label: clamp(10px, 0.85vw, 14px);
+  --type-body: clamp(13px, min(1.6vw, 2.2vh), 22px);
+  --type-body-leading: clamp(20px, min(2.4vw, 3.2vh), 34px);
+  --type-secondary: clamp(11px, min(1.2vw, 1.7vh), 17px);
+  --type-label: clamp(9px, min(0.85vw, 1.2vh), 14px);
   --type-ticker: clamp(10px, 1.1vw, 16px);
-  --type-cta: clamp(13px, 1.1vw, 16px);
+  --type-cta: clamp(11px, min(1.1vw, 1.5vh), 16px);
   --type-footer: clamp(11px, 1vw, 14px);
   --space-gutter: clamp(24px, 4vw, 64px);
 }
@@ -90,7 +90,7 @@ body {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.333%);
   }
 }
 
@@ -98,6 +98,11 @@ body {
    DESKTOP: No scroll, full viewport
    ============================================ */
 @media (min-width: 768px) {
+  html, body {
+    height: 100vh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
   .page-container {
     height: 100vh;
     overflow: hidden;
@@ -121,11 +126,11 @@ body {
    SELECTION
    ============================================ */
 ::selection {
-  background: #1E3A5F;
+  background: #1A1A1E;
   color: #F8FCFF;
 }
 
 [data-theme="dark"] ::selection {
-  background: #F0F7FC;
-  color: #1E3A5F;
+  background: #EDEDF0;
+  color: #1A1A1E;
 }

@@ -42,7 +42,7 @@ export default function HumanView() {
           >
             ABOUT
           </p>
-          <div className="space-y-4 md:space-y-5">
+          <div className="space-y-4" style={{ gap: "min(1.2vw, 1.8vh)" }}>
             {siteContent.about.map((p, i) => (
               <p
                 key={i}
@@ -59,16 +59,16 @@ export default function HumanView() {
         </div>
 
         {/* Currently / Previously — visible on desktop in left column */}
-        <div className="hidden md:flex flex-col mt-auto pb-6">
-          <div className="mt-8">
+        <div className="hidden md:flex flex-col mt-auto pb-[2vh]">
+          <div className="mt-[2vh]">
             <SectionLabel>{siteContent.currently.label}</SectionLabel>
             <SecondaryText>{siteContent.currently.value}</SecondaryText>
           </div>
-          <div className="mt-5">
+          <div className="mt-[1.5vh]">
             <SectionLabel>{siteContent.previously.label}</SectionLabel>
             <SecondaryText>{siteContent.previously.value}</SecondaryText>
           </div>
-          <div className="border-t border-[var(--divider)] mt-6 pt-5">
+          <div className="border-t border-[var(--divider)] mt-[2vh] pt-[1.5vh]">
             <SectionLabel>{siteContent.contact.label}</SectionLabel>
             <p className="font-sans" style={{ fontSize: "var(--type-secondary)" }}>
               <a

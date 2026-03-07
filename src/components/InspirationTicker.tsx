@@ -15,54 +15,89 @@ export default function InspirationTicker() {
 
     const container = containerRef.current;
     const track = trackRef.current;
-    const chars = track.querySelectorAll(".insp-char");
+    const chars = track.querySelectorAll<HTMLSpanElement>(".insp-char");
     if (chars.length === 0) return;
 
-    // Allow overflow during scatter animation
-    container.style.overflow = "visible";
+    const halfWidth = track.scrollWidth / 2;
+    const scatterZone = 120; // px from left edge where scatter happens
 
-    // Set initial state: heavily scattered — big vertical spread, rotation, scale variation
-    gsap.set(chars, {
-      opacity: 0,
-      y: () => gsap.utils.random(-60, 60),
-      x: () => gsap.utils.random(-10, 10),
-      rotation: () => gsap.utils.random(-40, 40),
-      scale: () => gsap.utils.random(0.3, 1.4),
-    });
+    // Start all chars invisible
+    gsap.set(chars, { opacity: 0 });
 
-    // Animate letters falling into place — staggered cascade
-    const tl = gsap.timeline();
+    // Track which chars are currently "active" (visible and settled)
+    const settled = new Set<Element>();
 
-    tl.to(chars, {
-      opacity: 1,
-      y: 0,
+    // Scatter a char and animate it settling
+    function scatterIn(char: Element) {
+      if (settled.has(char)) return;
+      settled.add(char);
+      gsap.fromTo(
+        char,
+        {
+          opacity: 0,
+          y: gsap.utils.random(-50, 50),
+          x: gsap.utils.random(-8, 8),
+          rotation: gsap.utils.random(-35, 35),
+          scale: gsap.utils.random(0.4, 1.3),
+        },
+        {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          rotation: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: "back.out(1.2)",
+        }
+      );
+    }
+
+    // Reset a char when it exits right so it can scatter again on re-entry
+    function resetChar(char: Element) {
+      if (!settled.has(char)) return;
+      settled.delete(char);
+      gsap.set(char, { opacity: 0 });
+    }
+
+    // Start track offset left, scroll rightward
+    gsap.set(track, { x: -halfWidth });
+
+    const scrollTween = gsap.to(track, {
       x: 0,
-      rotation: 0,
-      scale: 1,
-      duration: 0.8,
-      stagger: {
-        each: 0.004,
-        from: "start",
+      duration: halfWidth / 30,
+      ease: "none",
+      repeat: -1,
+      onUpdate() {
+        const containerRect = container.getBoundingClientRect();
+        const leftEdge = containerRect.left;
+        const rightEdge = containerRect.right;
+
+        for (let i = 0; i < chars.length; i++) {
+          const char = chars[i];
+          const rect = char.getBoundingClientRect();
+          const charCenter = rect.left + rect.width / 2;
+
+          // Char entering from left — within scatter zone
+          if (charCenter >= leftEdge - 20 && charCenter <= leftEdge + scatterZone) {
+            scatterIn(char);
+          }
+          // Char exited past right edge — reset for next loop
+          else if (charCenter > rightEdge + 50) {
+            resetChar(char);
+          }
+          // Char is in the middle visible area but not settled (e.g. initial load)
+          else if (charCenter > leftEdge + scatterZone && charCenter < rightEdge && !settled.has(char)) {
+            // Instantly show chars already in view on first pass
+            settled.add(char);
+            gsap.set(char, { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1 });
+          }
+        }
       },
-      ease: "back.out(1.4)",
-      delay: 0.3,
     });
 
-    // After letters settle, clip overflow and start horizontal scroll
-    tl.call(() => {
-      container.style.overflow = "hidden";
-    });
-
-    tl.to(
-      track,
-      {
-        x: -(track.scrollWidth / 2),
-        duration: track.scrollWidth / 2 / 30,
-        ease: "none",
-        repeat: -1,
-      },
-      "+=0.5"
-    );
+    return () => {
+      scrollTween.kill();
+    };
   }, []);
 
   const text = siteContent.inspirations.join(" · ") + " · ";
