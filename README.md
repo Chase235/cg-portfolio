@@ -1,4 +1,4 @@
-# Portfolio Starter
+# CG Portfolio Setup
 
 A single-page portfolio site built with Next.js, Tailwind CSS, and GSAP. 
 
