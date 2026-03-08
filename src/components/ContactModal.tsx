@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import gsap from "gsap";
+import { useState, useRef, useCallback } from "react";
+import { useCurveWipeModal } from "@/hooks/useCurveWipeModal";
 
 interface ContactModalProps {
   open: boolean;
@@ -12,163 +12,46 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
   const [replyTo, setReplyTo] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const backdropRef = useRef<HTMLDivElement>(null);
+  const [sending, setSending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  const animateIn = useCallback(() => {
-    const svg = svgRef.current;
-    const backdrop = backdropRef.current;
-    const modal = modalRef.current;
-    if (!svg || !backdrop || !modal) return;
-
-    const path = svg.querySelector("path");
-    if (!path) return;
-
-    gsap.killTweensOf([path, backdrop, modal]);
-    if (tlRef.current) tlRef.current.kill();
-
-    const tl = gsap.timeline();
-    tlRef.current = tl;
-
-    // Start state: curve wipe below viewport
-    const isMobile = window.innerWidth < 768;
-
-    gsap.set(svg, { display: "block" });
-    gsap.set(backdrop, { opacity: 0 });
-
-    if (isMobile) {
-      gsap.set(modal, { opacity: 1, y: "100%" });
-    } else {
-      gsap.set(modal, { opacity: 0, scale: 0.95, y: 30 });
-    }
-
-    // Animate curve wipe from bottom to top
-    tl.fromTo(
-      path,
-      { attr: { d: "M-30,120 Q50,120 130,120 L130,120 L-30,120 Z" } },
-      {
-        attr: { d: "M-30,120 Q50,20 130,120 L130,120 L-30,120 Z" },
-        duration: 0.5,
-        ease: "power3.inOut",
-      }
-    )
-    .to(
-      backdrop,
-      { opacity: 1, duration: 0.3, ease: "power2.out" },
-      0.15
-    )
-    .to(
-      path,
-      {
-        attr: { d: "M-30,-10 Q50,-10 130,-10 L130,120 L-30,120 Z" },
-        duration: 1.2,
-        ease: "power1.out",
-      },
-      0.35
-    )
-    .to(
-      modal,
-      isMobile
-        ? { y: 0, duration: 0.4, ease: "power2.out" }
-        : { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power2.out" },
-      0.55
-    )
-    .set(svg, { display: "none" });
+  const resetForm = useCallback(() => {
+    setSent(false);
+    setSending(false);
+    setReplyTo("");
+    setMessage("");
   }, []);
 
-  const animateOut = useCallback(() => {
-    const svg = svgRef.current;
-    const backdrop = backdropRef.current;
-    const modal = modalRef.current;
-    if (!svg || !backdrop || !modal) return;
+  const { mounted, backdropRef, modalRef, svgRef } = useCurveWipeModal(open, onClose, resetForm);
 
-    const path = svg.querySelector("path");
-    if (!path) return;
-
-    gsap.killTweensOf([path, backdrop, modal]);
-    if (tlRef.current) tlRef.current.kill();
-
-    const tl = gsap.timeline({
-      onComplete: () => setMounted(false),
-    });
-    tlRef.current = tl;
-
-    const isMobile = window.innerWidth < 768;
-
-    gsap.set(svg, { display: "block" });
-
-    tl.to(modal, isMobile
-        ? { y: "100%", duration: 0.3, ease: "power2.in" }
-        : { opacity: 0, scale: 0.95, y: 30, duration: 0.25, ease: "power2.in" }
-      )
-      .fromTo(
-        path,
-        { attr: { d: "M-30,-10 Q50,-10 130,-10 L130,120 L-30,120 Z" } },
-        {
-          attr: { d: "M-30,120 Q50,20 130,120 L130,120 L-30,120 Z" },
-          duration: 0.3,
-          ease: "power2.out",
-        },
-        0.1
-      )
-      .to(backdrop, { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.15)
-      .to(
-        path,
-        {
-          attr: { d: "M-30,120 Q50,120 130,120 L130,120 L-30,120 Z" },
-          duration: 0.4,
-          ease: "power3.inOut",
-        },
-        0.25
-      );
-  }, []);
-
-  // Mount/unmount + trigger animations
-  useEffect(() => {
-    if (open) {
-      setSent(false);
-      setReplyTo("");
-      setMessage("");
-      setMounted(true);
-    } else if (mounted) {
-      animateOut();
-    }
-  }, [open, mounted, animateOut]);
-
-  // Animate in once mounted
-  useEffect(() => {
-    if (mounted && open) {
-      // Small delay to ensure DOM is rendered
-      requestAnimationFrame(() => {
-        animateIn();
-        setTimeout(() => inputRef.current?.focus(), 400);
-      });
-    }
-  }, [mounted, open, animateIn]);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [open, onClose]);
+  // Focus input after mount animation
+  const prevMounted = useRef(false);
+  if (mounted && open && !prevMounted.current) {
+    prevMounted.current = true;
+    setTimeout(() => inputRef.current?.focus(), 500);
+  }
+  if (!mounted) prevMounted.current = false;
 
   if (!mounted && !open) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSending(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ replyTo, message }),
+      });
+    } catch {
+      // Show success regardless — we don't want to expose errors to visitors
+    }
+    setSending(false);
     setSent(true);
   };
 
   return (
     <>
-      {/* SVG curve wipe overlay */}
       <svg
         ref={svgRef}
         className="fixed inset-0 z-[60] pointer-events-none"
@@ -176,53 +59,35 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
         preserveAspectRatio="none"
         style={{ display: "none", width: "100vw", height: "100vh" }}
       >
-        <path
-          d="M-30,120 Q50,120 130,120 L130,120 L-30,120 Z"
-          fill="var(--bg)"
-          opacity="0.64"
-        />
+        <path d="M-30,120 Q50,120 130,120 L130,120 L-30,120 Z" fill="var(--bg)" opacity="0.64" />
       </svg>
 
-      {/* Backdrop + modal */}
       <div
         ref={backdropRef}
         className="fixed inset-0 z-[70] flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm"
         style={{ opacity: 0 }}
-        onClick={(e) => {
-          if (e.target === backdropRef.current) onClose();
-        }}
+        onClick={(e) => { if (e.target === backdropRef.current) onClose(); }}
       >
         <div
           ref={modalRef}
           className="w-full max-w-lg mx-0 md:mx-4 bg-[#0E1320] border border-[#1E2D45] rounded-t-xl md:rounded-lg shadow-2xl overflow-hidden"
           style={{ opacity: 0 }}
         >
-          {/* Terminal header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#1E2D45]">
             <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <button
-                  onClick={onClose}
-                  className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-110 transition-all cursor-pointer"
-                />
-              </div>
-              <span className="ml-3 text-[11px] font-mono text-[#738090]">
-                contact.md
-              </span>
+              <button
+                onClick={onClose}
+                className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-110 transition-all cursor-pointer"
+              />
+              <span className="ml-3 text-[11px] font-mono text-[#738090]">contact.md</span>
             </div>
-            <span className="text-[10px] font-mono text-[#738090] tracking-wider">
-              MARKDOWN SUPPORTED
-            </span>
+            <span className="text-[10px] font-mono text-[#738090] tracking-wider">MARKDOWN SUPPORTED</span>
           </div>
 
           {sent ? (
             <div className="p-8 text-center">
-              <p className="font-mono text-[#9BD59A] text-sm">
-                {">"} Message sent successfully.
-              </p>
-              <p className="font-mono text-[#738090] text-xs mt-2">
-                I&apos;ll get back to you soon.
-              </p>
+              <p className="font-mono text-[#9BD59A] text-sm">{">"} Message sent successfully.</p>
+              <p className="font-mono text-[#738090] text-xs mt-2">I&apos;ll get back to you soon.</p>
               <button
                 onClick={onClose}
                 className="mt-6 px-6 py-2 font-mono text-xs text-[#D1D9E0] border border-[#2D4F78] rounded hover:bg-[#1E2D45] transition-colors cursor-pointer"
@@ -232,11 +97,9 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="p-4 space-y-4">
-              {/* Reply-to field */}
               <div>
                 <label className="flex items-center gap-2 font-mono text-xs text-[#738090] mb-1.5">
-                  <span className="text-[#7EB9FE]">$</span>
-                  reply_to
+                  <span className="text-[#7EB9FE]">$</span>reply_to
                 </label>
                 <input
                   ref={inputRef}
@@ -248,17 +111,12 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
                   className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors"
                 />
               </div>
-
-              {/* Message field */}
               <div>
                 <label className="flex items-center justify-between font-mono text-xs text-[#738090] mb-1.5">
                   <span className="flex items-center gap-2">
-                    <span className="text-[#7EB9FE]">$</span>
-                    message
+                    <span className="text-[#7EB9FE]">$</span>message
                   </span>
-                  <span className="text-[10px] text-[#3A4A5C]">
-                    # **bold** *italic* `code` supported
-                  </span>
+                  <span className="text-[10px] text-[#3A4A5C]"># **bold** *italic* `code` supported</span>
                 </label>
                 <textarea
                   required
@@ -269,17 +127,14 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
                   className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors resize-none"
                 />
               </div>
-
-              {/* Submit */}
               <div className="flex items-center justify-between pt-1">
-                <span className="hidden md:inline font-mono text-[10px] text-[#3A4A5C]">
-                  esc to close
-                </span>
+                <span className="hidden md:inline font-mono text-[10px] text-[#3A4A5C]">esc to close</span>
                 <button
                   type="submit"
-                  className="px-5 py-2 font-mono text-xs font-medium bg-[#7EB9FE] text-[#0E1320] rounded hover:bg-[#9ECBFF] transition-colors cursor-pointer"
+                  disabled={sending}
+                  className="px-5 py-2 font-mono text-xs font-medium bg-[#7EB9FE] text-[#0E1320] rounded hover:bg-[#9ECBFF] transition-colors cursor-pointer disabled:opacity-50"
                 >
-                  send_message()
+                  {sending ? "sending..." : "send_message()"}
                 </button>
               </div>
             </form>

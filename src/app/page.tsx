@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import Header from "@/components/Header";
-import HumanView from "@/components/HumanView";
-import AIView from "@/components/AIView";
 import Footer from "@/components/Footer";
+
+const HumanView = lazy(() => import("@/components/HumanView"));
+const AIView = lazy(() => import("@/components/AIView"));
 
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mode, setMode] = useState<"human" | "ai">("human");
 
-  // On mount, read saved theme and enable transitions after first paint
   useEffect(() => {
     try {
       const saved = localStorage.getItem("theme");
@@ -19,32 +19,25 @@ export default function Home() {
         document.documentElement.setAttribute("data-theme", "dark");
       }
     } catch {}
-    // Enable body transitions only after hydration to prevent flash/pointer blocking
-    requestAnimationFrame(() => {
-      document.body.classList.add("ready");
-    });
+    requestAnimationFrame(() => document.body.classList.add("ready"));
   }, []);
 
-  // Sync data-theme attribute whenever theme changes
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
-
-  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
-  const toggleMode = () => setMode(mode === "human" ? "ai" : "human");
 
   return (
     <div className="page-container">
       <Header
         isLight={theme === "light"}
         isHuman={mode === "human"}
-        onThemeToggle={toggleTheme}
-        onModeToggle={toggleMode}
+        onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")}
+        onModeToggle={() => setMode(mode === "human" ? "ai" : "human")}
       />
-
-      {mode === "human" ? <HumanView /> : <AIView />}
-
+      <Suspense fallback={null}>
+        {mode === "human" ? <HumanView /> : <AIView />}
+      </Suspense>
       <Footer />
     </div>
   );

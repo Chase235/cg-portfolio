@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
 /* ============================================
@@ -37,18 +36,17 @@
 }
 
 /* ============================================
-   TAILWIND THEME EXTENSION
+   TAILWIND THEME EXTENSION (next/font vars)
    ============================================ */
 @theme {
-  --font-display: "Space Grotesk", sans-serif;
-  --font-sans: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-space-mono: "Space Mono", monospace;
+  --font-display: var(--nf-space-grotesk), sans-serif;
+  --font-sans: var(--nf-inter), sans-serif;
+  --font-mono: var(--nf-jetbrains-mono), monospace;
+  --font-space-mono: var(--nf-space-mono), monospace;
 }
 
 /* ============================================
-   FLUID TYPE SCALE (Studio Freight approach)
-   Scales between 768px → 1920px viewport
+   FLUID TYPE SCALE
    ============================================ */
 :root {
   --type-display: clamp(19px, 2.94vw, 42px);
@@ -66,7 +64,7 @@
    BASE STYLES
    ============================================ */
 html {
-  font-family: "Inter", sans-serif;
+  font-family: var(--nf-inter), sans-serif;
 }
 
 body {
@@ -89,12 +87,8 @@ body.ready {
 }
 
 @keyframes ticker-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-33.333%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
 }
 
 /* ============================================

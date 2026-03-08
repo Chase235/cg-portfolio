@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { siteContent } from "@/data/content";
 import LogoCarousel from "./LogoCarousel";
-import ContactModal from "./ContactModal";
-import PasswordModal from "./PasswordModal";
+
+const ContactModal = lazy(() => import("./ContactModal"));
+const PasswordModal = lazy(() => import("./PasswordModal"));
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -222,12 +223,14 @@ export default function HumanView() {
         </div>
       </div>
 
-      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
-      <PasswordModal
-        open={passwordOpen}
-        onClose={() => setPasswordOpen(false)}
-        onRequestAccess={() => setContactOpen(true)}
-      />
+      <Suspense fallback={null}>
+        <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+        <PasswordModal
+          open={passwordOpen}
+          onClose={() => setPasswordOpen(false)}
+          onRequestAccess={() => setContactOpen(true)}
+        />
+      </Suspense>
     </>
   );
 }
