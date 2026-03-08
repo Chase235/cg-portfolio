@@ -220,7 +220,7 @@ export default function PasswordModal({ open, onClose, onRequestAccess }: Passwo
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-4 space-y-4">
+          <form onSubmit={handleSubmit} className="p-4 flex flex-col" style={{ minHeight: "280px" }}>
             <div>
               <label className="flex items-center gap-2 font-mono text-xs text-[#738090] mb-1.5">
                 <span className="text-[#7EB9FE]">$</span>
@@ -236,6 +236,8 @@ export default function PasswordModal({ open, onClose, onRequestAccess }: Passwo
                 className="w-full bg-[#0A0F1A] border border-[#1E2D45] rounded px-3 py-2.5 font-mono text-sm text-[#D1D9E0] placeholder:text-[#3A4A5C] focus:outline-none focus:border-[#7EB9FE] transition-colors"
               />
             </div>
+
+            <div className="flex-1" />
 
             <div className="flex items-center justify-between pt-1">
               <button

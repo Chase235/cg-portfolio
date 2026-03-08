@@ -21,7 +21,8 @@ export default function InspirationTicker() {
     const totalChars = chars.length;
     const halfCount = totalChars / 2;
     const halfWidth = track.scrollWidth / 2;
-    const scatterZone = 250;
+    const isMobile = window.innerWidth < 768;
+    const scatterZone = isMobile ? 125 : 250;
 
     // Each char gets unique scatter values + a random resolve offset
     const scatterData = Array.from({ length: totalChars }, () => ({

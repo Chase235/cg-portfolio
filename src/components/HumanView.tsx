@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { siteContent } from "@/data/content";
-import VideoPlaceholder from "./VideoPlaceholder";
+import LogoCarousel from "./LogoCarousel";
 import ContactModal from "./ContactModal";
 import PasswordModal from "./PasswordModal";
 
@@ -124,6 +124,18 @@ export default function HumanView() {
             </div>
           </div>
 
+          {/* Currently / Previously — mobile, between about and video */}
+          <div className="md:hidden mt-6 space-y-4">
+            <div>
+              <SectionLabel>{siteContent.currently.label}</SectionLabel>
+              <SecondaryText>{siteContent.currently.value}</SecondaryText>
+            </div>
+            <div>
+              <SectionLabel>{siteContent.previously.label}</SectionLabel>
+              <SecondaryText>{siteContent.previously.value}</SecondaryText>
+            </div>
+          </div>
+
           {/* Currently / Previously — visible on desktop in left column */}
           <div className="hidden md:flex flex-col flex-shrink-0 pb-[1.5vh]">
             <div className="mt-[1.5vh]">
@@ -145,34 +157,49 @@ export default function HumanView() {
 
         {/* Right column — fills remaining width, no right padding so video bleeds */}
         <div className="md:pl-12 flex flex-col flex-1 min-w-0">
-          {/* Design Reel — video bleeds off right edge */}
-          <div className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 md:flex md:flex-col">
+          {/* Design Reel + CTA pinned below */}
+          <div className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 flex flex-col">
             <p
               className="font-mono font-medium tracking-wider text-[var(--text-muted)] mb-3 md:mb-[1vh]"
               style={{ fontSize: "var(--type-label)" }}
             >
-              DESIGN REEL
+              PRESENT AND PAST CLIENTS
             </p>
-            <div className="md:flex-1 md:min-h-0">
-              <VideoPlaceholder />
+            <div className="md:flex-1 md:min-h-0 md:flex md:items-center relative">
+              <LogoCarousel />
+              {/* CTA — pinned inside frame on desktop only */}
+              <div className="hidden md:flex absolute bottom-4 left-0 flex-row items-center gap-4 z-10">
+                <button
+                  onClick={() => setPasswordOpen(true)}
+                  className="px-8 py-[1vh] bg-[var(--cta-bg)] text-[var(--cta-text)] font-mono font-medium rounded-md hover:opacity-90 transition-opacity cursor-pointer"
+                  style={{ fontSize: "var(--type-cta)" }}
+                >
+                  View Selected Work
+                </button>
+                <p
+                  className="font-spaceMono text-[var(--text-muted)]"
+                  style={{ fontSize: "var(--type-label)" }}
+                >
+                  Password-protected case studies
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-6 md:mt-[2vh]">
-            <button
-              onClick={() => setPasswordOpen(true)}
-              className="w-full md:w-auto px-8 py-[1vh] bg-[var(--cta-bg)] text-[var(--cta-text)] font-mono font-medium rounded-md hover:opacity-90 transition-opacity cursor-pointer"
-              style={{ fontSize: "var(--type-cta)" }}
-            >
-              View Selected Work
-            </button>
-            <p
-              className="font-spaceMono text-[var(--text-muted)] mt-2"
-              style={{ fontSize: "var(--type-label)" }}
-            >
-              Password-protected case studies
-            </p>
+            {/* CTA — below frame on mobile only */}
+            <div className="md:hidden mt-4 mb-4 flex flex-col">
+              <button
+                onClick={() => setPasswordOpen(true)}
+                className="w-full px-8 py-3 bg-[var(--cta-bg)] text-[var(--cta-text)] font-mono font-medium rounded-md hover:opacity-90 transition-opacity cursor-pointer"
+                style={{ fontSize: "var(--type-cta)" }}
+              >
+                View Selected Work
+              </button>
+              <p
+                className="font-spaceMono text-[var(--text-muted)] mt-2"
+                style={{ fontSize: "var(--type-label)" }}
+              >
+                Password-protected case studies
+              </p>
+            </div>
           </div>
 
           {/* Clients — desktop */}
@@ -184,14 +211,6 @@ export default function HumanView() {
 
         {/* Mobile-only sections below the fold */}
         <div className="md:hidden mt-8 space-y-6 pb-8">
-          <div className="border-t border-[var(--divider)] pt-5">
-            <SectionLabel>{siteContent.currently.label}</SectionLabel>
-            <SecondaryText>{siteContent.currently.value}</SecondaryText>
-          </div>
-          <div>
-            <SectionLabel>{siteContent.previously.label}</SectionLabel>
-            <SecondaryText>{siteContent.previously.value}</SecondaryText>
-          </div>
           <div className="border-t border-[var(--divider)] pt-5">
             <SectionLabel>{siteContent.contact.label}</SectionLabel>
             <ContactIcons onMessageClick={() => setContactOpen(true)} />
