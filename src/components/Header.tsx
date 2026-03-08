@@ -43,8 +43,10 @@ export default function Header({
         </div>
       </div>
 
-      {/* Row 2: Titles ticker */}
-      <TitlesTicker />
+      {/* Row 2: Titles ticker — subtitle for SEO */}
+      <p role="doc-subtitle" aria-label="Creative Leader, Founding Designer, Design Engineer">
+        <TitlesTicker />
+      </p>
 
       {/* Divider */}
       <div className="h-px bg-[var(--divider)] mt-3 md:mt-[1vh]" />

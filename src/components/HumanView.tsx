@@ -98,17 +98,17 @@ export default function HumanView() {
 
   return (
     <>
-      <div className="flex-1 flex flex-col md:flex-row md:gap-0 pl-[var(--space-gutter)] pr-[var(--space-gutter)] md:pr-0 overflow-hidden">
+      <main className="flex-1 flex flex-col md:flex-row md:gap-0 pl-[var(--space-gutter)] pr-[var(--space-gutter)] md:pr-0 overflow-hidden">
         {/* Left column — shrinks slower than right */}
-        <div className="md:w-[42%] md:flex-shrink-0 flex flex-col md:pr-12 md:border-r border-[var(--divider)] min-w-0">
+        <article className="md:w-[42%] md:flex-shrink-0 flex flex-col md:pr-12 md:border-r border-[var(--divider)] min-w-0">
           {/* About — flex-1 + min-h-0 lets this shrink when viewport is short */}
-          <div className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 md:overflow-hidden">
-            <p
+          <section className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 md:overflow-hidden">
+            <h2
               className="font-mono font-medium tracking-wider text-[var(--text-muted)] mb-3 md:mb-[1vh]"
               style={{ fontSize: "var(--type-label)" }}
             >
               ABOUT
-            </p>
+            </h2>
             <div className="space-y-4" style={{ gap: "min(1.2vw, 1.8vh)" }}>
               {siteContent.about.map((p, i) => (
                 <p
@@ -123,7 +123,7 @@ export default function HumanView() {
                 </p>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Currently / Previously — mobile, between about and video */}
           <div className="md:hidden mt-6 space-y-4">
@@ -154,18 +154,18 @@ export default function HumanView() {
               <ContactIcons onMessageClick={() => setContactOpen(true)} />
             </div>
           </div>
-        </div>
+        </article>
 
         {/* Right column — fills remaining width, no right padding so video bleeds */}
-        <div className="md:pl-12 flex flex-col flex-1 min-w-0">
+        <aside className="md:pl-12 flex flex-col flex-1 min-w-0">
           {/* Design Reel + CTA pinned below */}
-          <div className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 flex flex-col">
-            <p
+          <section className="pt-6 md:pt-[2vh] md:flex-1 md:min-h-0 flex flex-col">
+            <h2
               className="font-mono font-medium tracking-wider text-[var(--text-muted)] mb-3 md:mb-[1vh]"
               style={{ fontSize: "var(--type-label)" }}
             >
               PRESENT AND PAST CLIENTS
-            </p>
+            </h2>
             <div className="md:flex-1 md:min-h-0 md:flex md:items-center relative">
               <LogoCarousel />
               {/* CTA — pinned inside frame on desktop only */}
@@ -201,14 +201,14 @@ export default function HumanView() {
                 Password-protected case studies
               </p>
             </div>
-          </div>
+          </section>
 
           {/* Clients — desktop */}
           <div className="hidden md:block mt-auto pb-[2vh]">
             <SectionLabel>{siteContent.clients.label}</SectionLabel>
             <SecondaryText>{siteContent.clients.list}</SecondaryText>
           </div>
-        </div>
+        </aside>
 
         {/* Mobile-only sections below the fold */}
         <div className="md:hidden mt-8 space-y-6 pb-8">
@@ -221,7 +221,7 @@ export default function HumanView() {
             <SecondaryText>{siteContent.clients.list}</SecondaryText>
           </div>
         </div>
-      </div>
+      </main>
 
       <Suspense fallback={null}>
         <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
