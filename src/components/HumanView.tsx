@@ -6,6 +6,7 @@ import LogoCarousel from "./LogoCarousel";
 
 const ContactModal = lazy(() => import("./ContactModal"));
 const PasswordModal = lazy(() => import("./PasswordModal"));
+const CVPasswordModal = lazy(() => import("./CVPasswordModal"));
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -60,6 +61,16 @@ function MessageIcon() {
   );
 }
 
+function DownloadIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  );
+}
+
 function ContactIcons({ onMessageClick }: { onMessageClick: () => void }) {
   return (
     <div className="flex items-center gap-6">
@@ -95,6 +106,7 @@ function ContactIcons({ onMessageClick }: { onMessageClick: () => void }) {
 export default function HumanView() {
   const [contactOpen, setContactOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const [cvOpen, setCvOpen] = useState(false);
 
   return (
     <>
@@ -147,11 +159,25 @@ export default function HumanView() {
               <SectionLabel>{siteContent.previously.label}</SectionLabel>
               <SecondaryText>{siteContent.previously.value}</SecondaryText>
             </div>
-            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[2vh]">
-              <div className="mb-2">
-                <SectionLabel>{siteContent.contact.label}</SectionLabel>
+            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[2vh] flex items-start gap-10">
+              <div>
+                <div className="mb-2">
+                  <SectionLabel>{siteContent.contact.label}</SectionLabel>
+                </div>
+                <ContactIcons onMessageClick={() => setContactOpen(true)} />
               </div>
-              <ContactIcons onMessageClick={() => setContactOpen(true)} />
+              <div>
+                <div className="mb-2">
+                  <SectionLabel>CV</SectionLabel>
+                </div>
+                <button
+                  onClick={() => setCvOpen(true)}
+                  className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
+                  aria-label="Download CV"
+                >
+                  <DownloadIcon />
+                </button>
+              </div>
             </div>
           </div>
         </article>
@@ -216,9 +242,21 @@ export default function HumanView() {
             <SectionLabel>{siteContent.clients.label}</SectionLabel>
             <SecondaryText>{siteContent.clients.list}</SecondaryText>
           </div>
-          <div className="border-t border-[var(--divider)] pt-5">
-            <SectionLabel>{siteContent.contact.label}</SectionLabel>
-            <ContactIcons onMessageClick={() => setContactOpen(true)} />
+          <div className="border-t border-[var(--divider)] pt-5 flex items-start gap-10">
+            <div>
+              <SectionLabel>{siteContent.contact.label}</SectionLabel>
+              <ContactIcons onMessageClick={() => setContactOpen(true)} />
+            </div>
+            <div>
+              <SectionLabel>CV</SectionLabel>
+              <button
+                onClick={() => setCvOpen(true)}
+                className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer mt-1"
+                aria-label="Download CV"
+              >
+                <DownloadIcon />
+              </button>
+            </div>
           </div>
         </div>
       </main>
@@ -230,6 +268,7 @@ export default function HumanView() {
           onClose={() => setPasswordOpen(false)}
           onRequestAccess={() => setContactOpen(true)}
         />
+        <CVPasswordModal open={cvOpen} onClose={() => setCvOpen(false)} />
       </Suspense>
     </>
   );
