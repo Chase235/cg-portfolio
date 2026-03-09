@@ -80,7 +80,7 @@ and products for early-stage AI companies.
 
 ### previous
 - role: Creative Director
-  org: nCino (NYSE: NCNO)
+  org: nCino (NASDAQ: NCNO)
   scope: 15-person global team · $100M+ funding supported
 - org: W2O Group
 - org: Amazon
