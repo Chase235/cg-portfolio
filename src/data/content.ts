@@ -7,7 +7,6 @@ export const siteContent = {
     "Dad",
     "Skateboarder",
     "Furniture Builder",
-    "Wannabe Architect",
   ],
   about: [
     "I'm a designer and creative director who works across visual design, brand storytelling, product design, and engineering, connecting how a company looks, how it works, and how it grows. My more recent focus has been working with early stage AI product companies, helping to craft their brands and products while also shaping the ever-shifting space where design and engineering resolve.",
