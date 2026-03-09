@@ -61,12 +61,12 @@ function MessageIcon() {
   );
 }
 
-function DownloadIcon() {
+function BriefcaseIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
+      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+      <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+      <line x1="2" y1="13" x2="22" y2="13"/>
     </svg>
   );
 }
@@ -175,7 +175,7 @@ export default function HumanView() {
                   className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
                   aria-label="Download CV"
                 >
-                  <DownloadIcon />
+                  <BriefcaseIcon />
                 </button>
               </div>
             </div>
@@ -254,7 +254,7 @@ export default function HumanView() {
                 className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer mt-1"
                 aria-label="Download CV"
               >
-                <DownloadIcon />
+                <BriefcaseIcon />
               </button>
             </div>
           </div>
