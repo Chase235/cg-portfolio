@@ -251,7 +251,7 @@ export default function HumanView() {
               <SectionLabel>CV</SectionLabel>
               <button
                 onClick={() => setCvOpen(true)}
-                className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer mt-1"
+                className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
                 aria-label="Download CV"
               >
                 <BriefcaseIcon />
