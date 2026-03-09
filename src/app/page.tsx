@@ -3,8 +3,8 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HumanView from "@/components/HumanView";
 
-const HumanView = lazy(() => import("@/components/HumanView"));
 const AIView = lazy(() => import("@/components/AIView"));
 
 export default function Home() {
@@ -35,9 +35,13 @@ export default function Home() {
         onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")}
         onModeToggle={() => setMode(mode === "human" ? "ai" : "human")}
       />
-      <Suspense fallback={null}>
-        {mode === "human" ? <HumanView /> : <AIView />}
-      </Suspense>
+      {mode === "human" ? (
+        <HumanView />
+      ) : (
+        <Suspense fallback={null}>
+          <AIView />
+        </Suspense>
+      )}
       <Footer />
     </div>
   );

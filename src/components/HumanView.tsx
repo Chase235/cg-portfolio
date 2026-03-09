@@ -213,12 +213,12 @@ export default function HumanView() {
         {/* Mobile-only sections below the fold */}
         <div className="md:hidden mt-8 space-y-6 pb-8">
           <div className="border-t border-[var(--divider)] pt-5">
-            <SectionLabel>{siteContent.contact.label}</SectionLabel>
-            <ContactIcons onMessageClick={() => setContactOpen(true)} />
-          </div>
-          <div className="border-t border-[var(--divider)] pt-5">
             <SectionLabel>{siteContent.clients.label}</SectionLabel>
             <SecondaryText>{siteContent.clients.list}</SecondaryText>
+          </div>
+          <div className="border-t border-[var(--divider)] pt-5">
+            <SectionLabel>{siteContent.contact.label}</SectionLabel>
+            <ContactIcons onMessageClick={() => setContactOpen(true)} />
           </div>
         </div>
       </main>
