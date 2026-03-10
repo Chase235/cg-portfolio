@@ -294,7 +294,7 @@ export default function LogoCarousel() {
   const canvasPad = 40;
   const canvasW = 500 + canvasPad * 2;
   const canvasH = 160;
-  const bpColor = "#5A7FB5";
+  const bpColor = "var(--blueprint-color)";
 
   return (
     <div
@@ -428,7 +428,7 @@ export default function LogoCarousel() {
                 {/* Fill layer — resolved */}
                 {logo.paths.map((d, j) => (
                   <path key={`f-${j}`} className="fill-path"
-                    d={d} fill="rgba(255,255,255,0.9)"
+                    d={d} fill="var(--logo-fill)"
                   />
                 ))}
               </g>

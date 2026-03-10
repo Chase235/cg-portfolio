@@ -159,7 +159,7 @@ export default function HumanView() {
               <SectionLabel>{siteContent.previously.label}</SectionLabel>
               <SecondaryText>{siteContent.previously.value}</SecondaryText>
             </div>
-            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[2vh] flex items-start gap-10">
+            <div className="border-t border-[var(--divider)] mt-[1.5vh] pt-[2vh] flex items-start gap-16">
               <div>
                 <div className="mb-2">
                   <SectionLabel>{siteContent.contact.label}</SectionLabel>
@@ -172,7 +172,7 @@ export default function HumanView() {
                 </div>
                 <button
                   onClick={() => setCvOpen(true)}
-                  className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
+                  className="relative -top-[1px] text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
                   aria-label="Download CV"
                 >
                   <BriefcaseIcon />
@@ -242,7 +242,7 @@ export default function HumanView() {
             <SectionLabel>{siteContent.clients.label}</SectionLabel>
             <SecondaryText>{siteContent.clients.list}</SecondaryText>
           </div>
-          <div className="border-t border-[var(--divider)] pt-5 flex items-start gap-10">
+          <div className="border-t border-[var(--divider)] pt-5 flex items-start gap-16">
             <div>
               <SectionLabel>{siteContent.contact.label}</SectionLabel>
               <ContactIcons onMessageClick={() => setContactOpen(true)} />
@@ -251,7 +251,7 @@ export default function HumanView() {
               <SectionLabel>CV</SectionLabel>
               <button
                 onClick={() => setCvOpen(true)}
-                className="text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
+                className="relative -top-[1px] text-[var(--text-link)] hover:opacity-70 transition-opacity cursor-pointer"
                 aria-label="Download CV"
               >
                 <BriefcaseIcon />

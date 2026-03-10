@@ -4,35 +4,39 @@
    THEME: CSS Custom Properties
    ============================================ */
 :root {
-  --bg: #F8FCFF;
-  --text-primary: #1A1A1E;
-  --text-secondary: #57534E;
-  --text-muted: #A8A29F;
-  --text-link: #1A1A1E;
-  --divider: #D9D6D1;
-  --video-bg: #1C1917;
-  --cta-bg: #1A1A1E;
-  --cta-text: #FAFAF7;
-  --toggle-bg: #E0E0E3;
-  --toggle-pill: #FFFFFF;
-  --toggle-active: #1A1A1E;
-  --toggle-inactive: #8A8A90;
+  --bg: #E5F1FA;
+  --text-primary: #212128;
+  --text-secondary: #212128;
+  --text-muted: #212128;
+  --text-link: #212128;
+  --divider: #212128;
+  --video-bg: #212128;
+  --logo-fill: #E5F1FA;
+  --blueprint-color: #5A7FB5;
+  --cta-bg: #212128;
+  --cta-text: #E5F1FA;
+  --toggle-bg: rgba(33, 33, 40, 0.15);
+  --toggle-pill: #212128;
+  --toggle-active: #E5F1FA;
+  --toggle-inactive: rgba(33, 33, 40, 0.5);
 }
 
 [data-theme="dark"] {
-  --bg: #1A1A1E;
-  --text-primary: #EDEDF0;
-  --text-secondary: #A0A0A8;
-  --text-muted: #6A6A72;
-  --text-link: #B0B0BA;
-  --divider: #2C2C32;
-  --video-bg: #131315;
-  --cta-bg: #EDEDF0;
-  --cta-text: #1A1A1E;
-  --toggle-bg: #28282E;
-  --toggle-pill: #3A3A42;
-  --toggle-active: #EDEDF0;
-  --toggle-inactive: #5A5A62;
+  --bg: #212128;
+  --text-primary: #E5F1FA;
+  --text-secondary: #E5F1FA;
+  --text-muted: #E5F1FA;
+  --text-link: #E5F1FA;
+  --divider: #E5F1FA;
+  --video-bg: #E5F1FA;
+  --logo-fill: #212128;
+  --blueprint-color: #8A96A8;
+  --cta-bg: #E5F1FA;
+  --cta-text: #212128;
+  --toggle-bg: rgba(229, 241, 250, 0.15);
+  --toggle-pill: #E5F1FA;
+  --toggle-active: #212128;
+  --toggle-inactive: rgba(229, 241, 250, 0.5);
 }
 
 /* ============================================
@@ -123,11 +127,11 @@ body.ready {
    SELECTION
    ============================================ */
 ::selection {
-  background: #1A1A1E;
-  color: #F8FCFF;
+  background: #212128;
+  color: #E5F1FA;
 }
 
 [data-theme="dark"] ::selection {
-  background: #EDEDF0;
-  color: #1A1A1E;
+  background: #E5F1FA;
+  color: #212128;
 }
