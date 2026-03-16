@@ -65,7 +65,7 @@ function ShimmerSpecimen() {
 // --- ThinkingStep specimen ---
 function StepSpecimen() {
   const steps = [
-    '→ Querying QB for Acme LLC Q2 actuals',
+    '→ Querying QB for Badass Ball Hitches Q2 actuals',
     '→ Comparing against cashflow model',
     '→ Identifying variance drivers',
   ]
@@ -220,9 +220,9 @@ function PanelSpecimen() {
   }, [])
 
   const steps = [
-    'Querying QuickBooks for Acme LLC Q2 actuals',
-    'Querying QuickBooks for Beacon Holdings Q2',
-    'Cross-referencing against projected cashflow',
+    'Querying QuickBooks for Badass Ball Hitches Q2 actuals',
+    'Querying QuickBooks for TrailerWheelz Q2',
+    'Cross-referencing against UnbreakableBearings.com cashflow',
     'Identifying variance drivers',
     'Composing response...',
   ]
