@@ -12,12 +12,12 @@ export function ThinkingMorph() {
       <motion.div
         style={{
           position: 'absolute',
-          top: -2,
-          left: -2,
-          width: 52,
-          height: 52,
+          top: -3,
+          left: -3,
+          width: 54,
+          height: 54,
           borderRadius: '50%',
-          background: `conic-gradient(from 0deg, transparent 0deg, ${MINT}60 60deg, transparent 120deg, transparent 360deg)`,
+          background: `conic-gradient(from 0deg, transparent 0deg, ${MINT}90 50deg, ${MINT}40 90deg, transparent 140deg, transparent 360deg)`,
         }}
         animate={{ rotate: 360 }}
         transition={{
