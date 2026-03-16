@@ -215,7 +215,9 @@ export default function FinleyThinkingStatePage() {
           --ts-border: #284B50;
           --ts-mono: 'JetBrains Mono', ui-monospace, monospace;
         }
-        .ts-app { width: 100%; min-height: 100vh; background: var(--ts-bg); color: var(--ts-text); font-family: system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+        html, body { background: #0E1F22 !important; color: #F2F2F2 !important; overflow-x: hidden; height: auto !important; overflow-y: auto !important; }
+        body * { box-sizing: border-box; }
+        .ts-app { width: 100%; min-height: 100vh; background: var(--ts-bg); color: var(--ts-text); font-family: system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; position: relative; z-index: 1; }
         .ts-hero-section { width: 100%; min-height: 100vh; border-bottom: 1px solid var(--ts-border); position: relative; overflow: hidden; }
         .ts-hero-wordmark-svg { width: 228px; height: auto; position: absolute; top: 50%; left: 0; right: 0; margin: 0 auto; transform: translateY(-50%); }
         .ts-hero-lower { position: absolute; bottom: 15vh; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 48px; }
