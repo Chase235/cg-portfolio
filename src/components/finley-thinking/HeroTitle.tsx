@@ -17,10 +17,10 @@ export function HeroTitle() {
   const tickerVisibleWidth = 228 + 40 // 20px wider on each side
 
   return (
-    <section className="hero-section">
+    <section className="ts-hero-section">
       {/* Finley wordmark — SVG from Figma */}
       <motion.svg
-        className="hero-wordmark-svg"
+        className="ts-hero-wordmark-svg"
         viewBox="0 0 228 81"
         fill="none"
         initial={{ opacity: 0, y: 8 }}
@@ -31,9 +31,9 @@ export function HeroTitle() {
       </motion.svg>
 
       {/* Flame + Ticker grouped in the lower portion of the screen */}
-      <div className="hero-lower">
+      <div className="ts-hero-lower">
         <motion.div
-          className="hero-flame"
+          className="ts-hero-flame"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -59,11 +59,11 @@ export function HeroTitle() {
         </motion.div>
 
         <div
-          className="hero-ticker-mask"
+          className="ts-hero-ticker-mask"
           style={{ width: tickerVisibleWidth }}
         >
           <motion.div
-            className="hero-ticker-track"
+            className="ts-hero-ticker-track"
             animate={{ x: ['0%', '-50%'] }}
             transition={{
               duration: 18,
@@ -72,9 +72,9 @@ export function HeroTitle() {
             }}
           >
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="hero-ticker-text">
+              <span key={i} className="ts-hero-ticker-text">
                 {TICKER_TEXT}
-                <span className="hero-ticker-separator">·</span>
+                <span className="ts-hero-ticker-separator">·</span>
               </span>
             ))}
           </motion.div>
