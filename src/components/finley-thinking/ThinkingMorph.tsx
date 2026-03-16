@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion'
 import { FinleyFlame, TEAL, DARK_TEAL, MINT } from './FinleyMark'
 
-// Variant 04: Surface Tension
-// Circle border shimmers with traveling gradient. Flame breathes underneath.
+// Variant 03: Iridescence
+// Circle border shimmers with traveling iridescent gradient. Flame breathes underneath.
 export function ThinkingMorph() {
   return (
     <div style={{ position: 'relative', width: 48, height: 48 }}>
-      {/* Rotating conic gradient ring */}
+      {/* Rotating iridescent conic gradient ring */}
       <motion.div
         style={{
           position: 'absolute',
@@ -17,7 +17,16 @@ export function ThinkingMorph() {
           width: 54,
           height: 54,
           borderRadius: '50%',
-          background: `conic-gradient(from 0deg, transparent 0deg, ${MINT}90 50deg, ${MINT}40 90deg, transparent 140deg, transparent 360deg)`,
+          background: `conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            #99FFDDA0 40deg,
+            #7EB9FE80 65deg,
+            #C4A0FF50 85deg,
+            #99FFDD40 105deg,
+            transparent 150deg,
+            transparent 360deg
+          )`,
         }}
         animate={{ rotate: 360 }}
         transition={{
@@ -27,7 +36,7 @@ export function ThinkingMorph() {
         }}
       />
 
-      {/* Inner container (masks the gradient ring to just a border) */}
+      {/* Inner container */}
       <div
         style={{
           position: 'absolute',

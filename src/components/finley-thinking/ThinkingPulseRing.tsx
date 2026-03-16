@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion'
 import { FinleyFlame, TEAL, DARK_TEAL } from './FinleyMark'
 
-// Variant 02: Pulse Ring
-// Soft ring radiates outward from container at steady cadence
+// Variant 01: Sonar
+// Soft rings radiate outward from container — slower, smoother, more fluid
 export function ThinkingPulseRing() {
   return (
     <div style={{ position: 'relative', width: 48, height: 48 }}>
@@ -17,15 +17,15 @@ export function ThinkingPulseRing() {
           width: 56,
           height: 56,
           borderRadius: '50%',
-          border: `1.5px solid ${TEAL}`,
+          border: `1px solid ${TEAL}`,
         }}
         animate={{
           scale: [1, 1.6],
-          opacity: [0.4, 0],
+          opacity: [0.2, 0],
         }}
         transition={{
-          duration: 3.2,
-          ease: 'easeOut',
+          duration: 4,
+          ease: [0.25, 0.1, 0.25, 1],
           repeat: Infinity,
         }}
       />
@@ -39,22 +39,45 @@ export function ThinkingPulseRing() {
           width: 56,
           height: 56,
           borderRadius: '50%',
-          border: `1px solid ${TEAL}`,
+          border: `0.75px solid ${TEAL}`,
         }}
         animate={{
           scale: [1, 1.6],
-          opacity: [0.25, 0],
+          opacity: [0.15, 0],
         }}
         transition={{
-          duration: 3.2,
-          ease: 'easeOut',
+          duration: 4,
+          ease: [0.25, 0.1, 0.25, 1],
           repeat: Infinity,
-          delay: 1.6,
+          delay: 2,
         }}
       />
 
-      {/* Static container */}
-      <div
+      {/* Pulse ring 3 — third wave for continuous flow */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: -4,
+          left: -4,
+          width: 56,
+          height: 56,
+          borderRadius: '50%',
+          border: `0.5px solid ${TEAL}`,
+        }}
+        animate={{
+          scale: [1, 1.6],
+          opacity: [0.1, 0],
+        }}
+        transition={{
+          duration: 4,
+          ease: [0.25, 0.1, 0.25, 1],
+          repeat: Infinity,
+          delay: 3,
+        }}
+      />
+
+      {/* Container with shockwave bump synced to ring emission */}
+      <motion.div
         style={{
           width: 48,
           height: 48,
@@ -65,19 +88,18 @@ export function ThinkingPulseRing() {
           justifyContent: 'center',
           position: 'relative',
         }}
+        animate={{
+          scale: [1, 1.08, 1, 1, 1, 1, 1, 1.08, 1, 1, 1, 1, 1, 1.08, 1],
+        }}
+        transition={{
+          duration: 12,
+          ease: 'easeOut',
+          repeat: Infinity,
+          times: [0, 0.015, 0.05, 0.25, 0.33, 0.49, 0.5, 0.515, 0.55, 0.74, 0.75, 0.765, 0.8, 0.83, 0.87],
+        }}
       >
-        {/* Flame holds steady with very subtle pulse */}
-        <motion.div
-          animate={{ scale: [1, 1.02, 1] }}
-          transition={{
-            duration: 3.2,
-            ease: 'easeInOut',
-            repeat: Infinity,
-          }}
-        >
-          <FinleyFlame size={14} color={DARK_TEAL} />
-        </motion.div>
-      </div>
+        <FinleyFlame size={14} color={DARK_TEAL} />
+      </motion.div>
     </div>
   )
 }
