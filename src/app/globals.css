@@ -96,10 +96,10 @@ body.ready {
 }
 
 /* ============================================
-   DESKTOP: No scroll, full viewport
+   DESKTOP: No scroll, full viewport (homepage only)
    ============================================ */
 @media (min-width: 768px) {
-  html, body {
+  html:has(.page-container), html:has(.page-container) body {
     height: 100vh;
     overflow: hidden;
     overscroll-behavior: none;
