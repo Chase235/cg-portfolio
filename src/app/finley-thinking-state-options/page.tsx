@@ -364,8 +364,8 @@ export default function FinleyThinkingStatePage() {
         }
 
         @media (max-width: 768px) {
-          .ts-hero-wordmark-svg { width: 180px; }
-          .ts-hero-lower { bottom: 12vh; gap: 24px; }
+          .ts-hero-wordmark-svg { width: 180px; top: 38%; }
+          .ts-hero-lower { bottom: 22vh; gap: 24px; }
           .ts-variant-meta { flex-direction: column; gap: 8px; align-items: center; }
         }
       `}</style>
