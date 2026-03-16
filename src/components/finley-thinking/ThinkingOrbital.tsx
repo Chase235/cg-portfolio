@@ -45,7 +45,7 @@ export function ThinkingOrbital() {
   const containerSize = 48
   const orbitRadius = containerSize / 2 + 6
   const steps = 120
-  const tailParticleCount = 28
+  const tailParticleCount = 36
 
   const { x, y, times, angles } = buildOrbitKeyframes(steps, orbitRadius)
   const tailParticles = useTailParticles(tailParticleCount)
@@ -54,7 +54,7 @@ export function ThinkingOrbital() {
   const tailKeyframes = useMemo(() => {
     return tailParticles.map((particle) => {
       // Offset the angles backwards along the orbit
-      const angleOffset = particle.trailOffset * 0.45 // Trail spans ~25° of arc
+      const angleOffset = particle.trailOffset * 0.75 // Trail spans ~43° of arc
       const px = angles.map(
         (a) =>
           Math.cos(a - angleOffset) * orbitRadius + particle.scatter
@@ -94,9 +94,9 @@ export function ThinkingOrbital() {
             x: tailKeyframes[i].x,
             y: tailKeyframes[i].y,
             opacity: [
-              // Fade based on distance from head
-              0.68 * (1 - particle.trailOffset),
-              0.68 * (1 - particle.trailOffset),
+              // Slower decay — tail particles stay visible longer
+              0.78 * (1 - particle.trailOffset * 0.6),
+              0.78 * (1 - particle.trailOffset * 0.6),
             ],
           }}
           transition={{
@@ -118,7 +118,7 @@ export function ThinkingOrbital() {
           height: 5,
           borderRadius: '50%',
           backgroundColor: MINT,
-          boxShadow: `0 0 8px 2px ${MINT}40`,
+          boxShadow: `0 0 12px 4px ${MINT}60, 0 0 24px 8px ${MINT}25`,
           top: containerSize / 2 - 2.5,
           left: containerSize / 2 - 2.5,
           zIndex: 2,
@@ -139,6 +139,7 @@ export function ThinkingOrbital() {
           height: containerSize,
           borderRadius: '50%',
           backgroundColor: TEAL,
+          boxShadow: `0 0 16px 4px ${TEAL}50, 0 0 32px 8px ${TEAL}20`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

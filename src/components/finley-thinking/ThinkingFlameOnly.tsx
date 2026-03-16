@@ -27,8 +27,8 @@ export function ThinkingFlameOnly() {
           justifyContent: 'center',
         }}
         animate={{
-          scale: [1, 1.35, 1],
-          opacity: [0.5, 0.2, 0.5],
+          scale: [1, 1.5, 1],
+          opacity: [0.6, 0.25, 0.6],
         }}
         transition={{
           duration: 3.6,
@@ -38,10 +38,39 @@ export function ThinkingFlameOnly() {
       >
         <div
           style={{
-            width: 36,
-            height: 36,
+            width: 42,
+            height: 42,
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${TEAL}80 0%, ${TEAL}30 40%, transparent 70%)`,
+            background: `radial-gradient(circle, ${TEAL}A0 0%, ${TEAL}50 35%, ${TEAL}18 60%, transparent 80%)`,
+          }}
+        />
+      </motion.div>
+
+      {/* Outer glow pulse — slower, wider halo */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          inset: -8,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.08, 0.2],
+        }}
+        transition={{
+          duration: 5,
+          ease: 'easeInOut',
+          repeat: Infinity,
+        }}
+      >
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${TEAL}40 0%, ${TEAL}15 50%, transparent 75%)`,
           }}
         />
       </motion.div>
@@ -54,8 +83,8 @@ export function ThinkingFlameOnly() {
         fill="none"
         style={{ position: 'relative', zIndex: 1 }}
         animate={{
-          scale: [1, 1.08, 1, 0.92, 1],
-          y: [0, -1, 0, 1, 0],
+          scale: [1, 1.14, 1, 0.88, 1],
+          y: [0, -2, 0, 1.5, 0],
         }}
         transition={{
           duration: 3.6,
