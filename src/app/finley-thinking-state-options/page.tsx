@@ -124,6 +124,10 @@ function EmberGate({
               onChange={(e) => setPasscode(e.target.value)}
               placeholder="enter passcode"
               autoFocus
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-form-type="other"
               style={{
                 width: "100%",
                 background: "#071012",
