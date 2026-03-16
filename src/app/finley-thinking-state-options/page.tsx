@@ -182,7 +182,7 @@ const variants = [
     num: "02",
     title: "Orbit",
     desc: "Luminous dot in steady orbit around the container. The surface responds with tidal deformation at each pass. Precision as personality.",
-    meta: ["Loop: 6s", "Motion: linear orbit + ease-in-out deformation", "Dot: 5px, mint glow"],
+    meta: ["Loop: 6s", "Motion: linear orbit + tidal deformation", "Dot: 5px, mint glow"],
     Component: ThinkingOrbital,
   },
   {

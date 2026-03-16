@@ -33,10 +33,10 @@ function useTailParticles(count: number) {
       // How far behind the head this particle trails (0 = at head, 1 = far behind)
       trailOffset: (i + 1) / count,
       // Slight perpendicular scatter from the orbit path
-      scatter: (Math.random() - 0.5) * 6,
-      scatterY: (Math.random() - 0.5) * 6,
-      // Size variance — particles closer to head are slightly larger
-      size: 4 - (i / count) * 2.5,
+      scatter: (Math.random() - 0.5) * 5,
+      scatterY: (Math.random() - 0.5) * 5,
+      // Smaller particles, denser tail
+      size: 2.5 - (i / count) * 1.5,
     }))
   }, [count])
 }
@@ -45,7 +45,7 @@ export function ThinkingOrbital() {
   const containerSize = 48
   const orbitRadius = containerSize / 2 + 6
   const steps = 120
-  const tailParticleCount = 14
+  const tailParticleCount = 28
 
   const { x, y, times, angles } = buildOrbitKeyframes(steps, orbitRadius)
   const tailParticles = useTailParticles(tailParticleCount)
